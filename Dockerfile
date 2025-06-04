@@ -1,11 +1,11 @@
 # --- Stage 1: Build the Spring Boot application ---
-FROM openjdk:17-jdk-slim as build
+# Use a Maven image that includes OpenJDK 17
+FROM maven:3.9.6-openjdk-17 as build
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the Maven project files from the 'AirBnb' subfolder
-# The path is relative to the Dockerfile's location (repository root)
 COPY AirBnb/pom.xml .
 COPY AirBnb/src ./src
 
@@ -13,13 +13,13 @@ COPY AirBnb/src ./src
 RUN mvn clean package -DskipTests
 
 # --- Stage 2: Create the final production image ---
+# Use a slim OpenJDK image for the final application, as it's smaller
 FROM openjdk:17-jdk-slim
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the built JAR file from the 'build' stage
-# This path is relative to the WORKDIR in the build stage (/app/target/...)
 COPY --from=build /app/target/*.jar app.jar
 
 # Expose the port your Spring Boot app runs on

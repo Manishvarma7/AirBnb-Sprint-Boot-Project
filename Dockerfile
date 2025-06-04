@@ -1,6 +1,6 @@
 # --- Stage 1: Build the Spring Boot application ---
-# Use a Maven image that includes OpenJDK 17
-FROM maven:3.9.6-openjdk-17 as build
+# Use a Maven image that includes OpenJDK 17 (Eclipse Temurin distribution)
+FROM maven:3.9.6-eclipse-temurin-17 as build
 
 # Set the working directory inside the container
 WORKDIR /app
